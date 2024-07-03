@@ -3,7 +3,7 @@
   "name": "Tibia Stalker",
   "start_url": "https://www.tibiastalker.pl/",
   "display": "standalone",
-  "description": "The application allows finding all the characters of the player in the game Tibia.",
+  "description": "The application allows finding all the characters of the player in the game Tibia",
   "lang": "pl",
   "dir": "ltr",
   "theme_color": "#212529",

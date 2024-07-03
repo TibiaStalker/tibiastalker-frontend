@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta charSet="utf-8" />
         <link rel="icon" href="favicon.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Web site created using create-react-app" />
+        <meta name="description" content="The application allows finding all the characters of the player in the game Tibia" />
         <link rel="manifest" href="manifest.json" />
 
         <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
