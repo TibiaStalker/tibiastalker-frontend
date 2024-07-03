@@ -8,11 +8,15 @@
     </tr>
 </table>
 
-### Web Api
+### Web Page
 
 You can check out https://www.tibiastalker.pl/
 
 ## Screenshots
+
+<h4 align="center">Welcome Page</h>
+
+![](img/welcome_page.png)
 
 <h4 align="center">Example searching with suggestions</h>
 
@@ -24,4 +28,4 @@ You can check out https://www.tibiastalker.pl/
 
 <h4 align="center">Example error with similar characters</h>
 
-![](img/similar.png)
+![](img/error.png)
