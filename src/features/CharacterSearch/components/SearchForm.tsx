@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, Col, Dropdown, Form, Row, Spinner } from "react-bootstrap";
 
-import usePromptList from "../features/CharacterSearch/hooks/usePromptList";
+import usePromptList from "../hooks/usePromptList";
 
 type SearchFormProps = {
   value: string;

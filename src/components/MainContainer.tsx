@@ -3,13 +3,13 @@ import { Col, Container, Row } from "react-bootstrap";
 
 import { SearchedCharacterNameContext } from "../contexts/SearchedCharacterNameContext";
 import { SimilarCharactersCurrentPageContext } from "../contexts/SimilarCharactersCurrentPageContext";
+import { SearchForm } from "../features/CharacterSearch";
 import { fetchCharacterData, fetchSimilarCharactersData } from "../functions/FetchData";
 import { CharacterResponse, ErrorResponse, SimilarCharactersResponse } from "../types/CharacterResult";
 import { LOGO_SIZE } from "../utils/constants";
 import CharacterResult from "./CharacterResult";
 import TibiaLogo2 from "./logos/TibiaLogo2";
 import ErrorResult from "./RenderError";
-import SearchForm from "./SearchForm";
 import SimilarCharactersResult from "./SimilarCharactersResult";
 
 function MainContainer() {
