@@ -1,22 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, Col, Dropdown, Form, Row, Spinner } from "react-bootstrap";
 
+import usePromptList from "../features/CharacterSearch/hooks/usePrompts";
+
 type SearchFormProps = {
   value: string;
   onSubmit: (value: string) => void;
-  onChange: (value: string) => void;
   isLoading?: boolean;
-  promptList?: string[];
 };
 
-const SearchForm = ({ onSubmit, onChange, isLoading, value, promptList = [] }: SearchFormProps) => {
+const SearchForm = ({ onSubmit, isLoading, value }: SearchFormProps) => {
+  const { promptList, getPromptList, clearPromptList } = usePromptList();
   const [inputValue, setInputValue] = useState(value);
   const [isFocusOnInput, setIsFocusOnInput] = useState(false);
   const timeoutRef = useRef(null);
 
   const updateInputValue = (newValue: string) => {
     setInputValue(newValue);
-    onChange(newValue);
+    getPromptList(newValue);
   };
 
   const submit = (value?: string) => {
@@ -27,10 +28,10 @@ const SearchForm = ({ onSubmit, onChange, isLoading, value, promptList = [] }: S
       onSubmit(value);
     }
     setIsFocusOnInput(false);
+    clearPromptList();
   };
 
   const delayedInputBlur = () => {
-    // Note:
     timeoutRef.current = setTimeout(() => setIsFocusOnInput(false), 200);
   };
 
@@ -42,6 +43,7 @@ const SearchForm = ({ onSubmit, onChange, isLoading, value, promptList = [] }: S
     function syncExternalValueWithInput() {
       if (value !== inputValue) setInputValue(value);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [value],
   );
 

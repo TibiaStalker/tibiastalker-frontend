@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 
 import { SearchedCharacterNameContext } from "../contexts/SearchedCharacterNameContext";
 import { SimilarCharactersCurrentPageContext } from "../contexts/SimilarCharactersCurrentPageContext";
-import { fetchCharacterData, fetchPromptData, fetchSimilarCharactersData } from "../functions/FetchData";
+import { fetchCharacterData, fetchSimilarCharactersData } from "../functions/FetchData";
 import { CharacterResponse, ErrorResponse, SimilarCharactersResponse } from "../types/CharacterResult";
 import { LOGO_SIZE } from "../utils/constants";
 import CharacterResult from "./CharacterResult";
@@ -19,9 +19,7 @@ function MainContainer() {
   const [characterData, setCharacterData] = useState<CharacterResponse | null>(null);
   const [errorData, setErrorData] = useState<ErrorResponse | null>(null);
   const [similarCharacters, setSimilarCharacters] = useState<SimilarCharactersResponse | null>(null);
-  const [promptData, setPromptData] = useState<string[]>([]);
   const [searchedCharacterName, setSearchedCharacterName] = useState<string>("");
-  const debounceRef = useRef(null);
 
   const showLoader = () => setLoading(true);
   const hideLoader = () => setLoading(false);
@@ -31,7 +29,6 @@ function MainContainer() {
     setSearchedCharacterName(characterName);
     fetchCharacterData(characterName, setCharacterResponse).then(() => hideLoader());
     setSimilarCharacters(null);
-    setPromptData([]);
   };
 
   useEffect(() => {
@@ -62,13 +59,6 @@ function MainContainer() {
     }
   }, [errorData]);
 
-  const startFetchingPrompts = (currentInputValue: string) => {
-    clearTimeout(debounceRef.current);
-    if (currentInputValue.length > 2) {
-      debounceRef.current = setTimeout(() => fetchPromptData(currentInputValue, setPromptData), 800);
-    }
-  };
-
   const [isLogoClicked, setIsLogoClicked] = useState(false);
 
   const toggleWidth = () => {
@@ -92,7 +82,7 @@ function MainContainer() {
               </div>
             </Col>
             <Col className={isLogoClicked ? "fadeIn" : "fadeOut"}>
-              <SearchForm isLoading={loading} value={searchedCharacterName} onSubmit={startSearchingCharacter} onChange={startFetchingPrompts} promptList={promptData} />
+              <SearchForm isLoading={loading} value={searchedCharacterName} onSubmit={startSearchingCharacter} />
             </Col>
           </Row>
           <Row>
