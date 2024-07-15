@@ -9,7 +9,7 @@ const emitChange = () => {
   }
 };
 
-liveCommunication.connection.on("Character Tracker", event => {
+liveCommunication.connection.on("CharacterTracker", event => {
   const newCharacterStatusMap = new Map(actualCharacterStatusMap);
 
   newCharacterStatusMap.set(event.name, event);
