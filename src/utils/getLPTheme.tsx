@@ -17,6 +17,9 @@ declare module "@mui/material/styles/createPalette" {
     900: string;
   }
 
+  // FIXME: this maybe can delete. Need check the creating theme
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
   type PaletteColor = ColorRange;
 }
 
