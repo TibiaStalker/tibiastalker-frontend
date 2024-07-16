@@ -1,17 +1,10 @@
 import { useCallback, useRef, useState } from "react";
 
-import { BASE_URL } from "../../../constants/tibiastalkerApi";
-
-const fetchPromptList = async (input: string, setPromptData: (promptData: string[]) => void): Promise<void> => {
-  const result = await fetch(`${BASE_URL}/prompt?searchText=${input}&page=1&pageSize=10`);
-  const data = await result.json();
-  setPromptData(data);
-  return Promise.resolve();
-};
+import fetchPromptList from "./fetchPromptList";
 
 const initialPromptsList: string[] = [];
 
-const usePromptList = () => {
+export const usePromptList = () => {
   const [promptList, setPromptList] = useState(initialPromptsList);
   const debounceRef = useRef(null);
 

@@ -1,4 +1,7 @@
-import { createContext, Dispatch, SetStateAction } from "react";
+import { createContext } from "react";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-export const SearchedCharacterNameContext = createContext<[string, Dispatch<SetStateAction<string>>]>(["", () => {}]);
+import StartSearchingCharacter from "../types/StartSearchingCharacter";
+
+export const SearchedCharacterNameContext = createContext<StartSearchingCharacter>(() => {
+  return;
+});

@@ -4,8 +4,8 @@ import { Col, Container, Row, Table } from "react-bootstrap";
 
 import { SearchedCharacterNameContext } from "../contexts/SearchedCharacterNameContext";
 import { SimilarCharactersCurrentPageContext } from "../contexts/SimilarCharactersCurrentPageContext";
-import { toPascalCase } from "../functions/StringModificator";
 import { SimilarCharactersResponse } from "../types/CharacterResult";
+import { toPascalCase } from "../utils/stringModificator";
 import PaginationResult from "./PaginationResult";
 
 type SimilarCharactersProps = {
@@ -14,7 +14,7 @@ type SimilarCharactersProps = {
 
 function SimilarCharactersResult(props: SimilarCharactersProps) {
   const { similarCharacters } = props;
-  const [_, setCharacterName] = useContext(SearchedCharacterNameContext);
+  const startSearchingCharacter = useContext(SearchedCharacterNameContext);
   const [currentPage, setCurrentPage] = useContext(SimilarCharactersCurrentPageContext);
   const pageSize = 10;
   const totalPages = Math.ceil(props.similarCharacters.totalCount / pageSize);
@@ -35,7 +35,7 @@ function SimilarCharactersResult(props: SimilarCharactersProps) {
               <tbody>
                 {similarCharacters.names.map(name => (
                   <tr key={name}>
-                    <td className="character-link" onClick={() => setCharacterName(name)}>
+                    <td className="character-link" onClick={() => startSearchingCharacter(name)}>
                       {toPascalCase(name)}
                     </td>
                   </tr>

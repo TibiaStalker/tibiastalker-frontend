@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 
 import { SearchedCharacterNameContext } from "../contexts/SearchedCharacterNameContext";
 import { SimilarCharactersCurrentPageContext } from "../contexts/SimilarCharactersCurrentPageContext";
 import { SearchForm } from "../features/CharacterSearch";
-import { fetchCharacterData, fetchSimilarCharactersData } from "../functions/FetchData";
 import { CharacterResponse, ErrorResponse, SimilarCharactersResponse } from "../types/CharacterResult";
+import StartSearchingCharacter from "../types/StartSearchingCharacter";
 import { LOGO_SIZE } from "../utils/constants";
+import { fetchCharacterData, fetchSimilarCharactersData } from "../utils/FetchData";
 import CharacterResult from "./CharacterResult";
 import TibiaLogo2 from "./logos/TibiaLogo2";
 import ErrorResult from "./RenderError";
@@ -24,12 +25,12 @@ function MainContainer() {
   const showLoader = () => setLoading(true);
   const hideLoader = () => setLoading(false);
 
-  const startSearchingCharacter = (characterName: string) => {
+  const startSearchingCharacter: StartSearchingCharacter = useCallback((characterName: string) => {
     showLoader();
     setSearchedCharacterName(characterName);
     fetchCharacterData(characterName, setCharacterResponse).then(() => hideLoader());
     setSimilarCharacters(null);
-  };
+  }, []);
 
   useEffect(() => {
     setErrorData(null);
@@ -68,7 +69,7 @@ function MainContainer() {
   const smallLogoSize = LOGO_SIZE * 0.4;
 
   return (
-    <SearchedCharacterNameContext.Provider value={[searchedCharacterName, setSearchedCharacterName]}>
+    <SearchedCharacterNameContext.Provider value={startSearchingCharacter}>
       <SimilarCharactersCurrentPageContext.Provider value={[currentPage, setCurrentPage]}>
         <Container fluid className="d-flex flex-column align-items-center p-0">
           <div className={`absoluteCenter align-items-center d-flex flex-column ${isLogoClicked ? "fadeOut" : "transform-50"}`} onClick={toggleWidth}>

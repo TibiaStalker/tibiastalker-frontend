@@ -1,15 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, Col, Dropdown, Form, Row, Spinner } from "react-bootstrap";
 
-import usePromptList from "../features/CharacterSearch/hooks/usePromptList";
+import usePromptList from "../../hooks/usePromptList";
+import { SearchFormProps } from "./types";
 
-type SearchFormProps = {
-  value: string;
-  onSubmit: (value: string) => void;
-  isLoading?: boolean;
-};
-
-const SearchForm = ({ onSubmit, isLoading, value }: SearchFormProps) => {
+export const SearchForm = ({ onSubmit, isLoading, value }: SearchFormProps) => {
   const { promptList, getPromptList, clearPromptList } = usePromptList();
   const [inputValue, setInputValue] = useState(value);
   const [isFocusOnInput, setIsFocusOnInput] = useState(false);
@@ -86,5 +81,3 @@ const SearchForm = ({ onSubmit, isLoading, value }: SearchFormProps) => {
     </Row>
   );
 };
-
-export default SearchForm;
