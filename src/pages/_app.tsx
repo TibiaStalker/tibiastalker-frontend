@@ -1,12 +1,32 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../App.css";
-
+import { PaletteMode } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { AppCacheProvider } from "@mui/material-nextjs/v13-pagesRouter";
 import type { AppProps } from "next/app";
+import { Inter } from "next/font/google";
 import Head from "next/head";
+import { useState } from "react";
+
+import ApplicationBar from "~/components/ApplicationBar";
+import Footer from "~/components/Footer";
+import getLPTheme from "~/utils/getLPTheme";
+
+const inter = Inter({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [mode, setMode] = useState<PaletteMode>("dark");
+  const LPtheme = createTheme(getLPTheme(mode, { fontFamily: inter.style.fontFamily }));
+
+  const toggleColorMode = () => {
+    setMode(prev => (prev === "dark" ? "light" : "dark"));
+  };
+
   return (
-    <>
+    <AppCacheProvider {...pageProps}>
       <Head>
         <meta charSet="utf-8" />
         <link rel="icon" href="favicon.svg" />
@@ -49,7 +69,13 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#212529" />
         <title>Tibia Stalker</title>
       </Head>
-      <Component {...pageProps} />
-    </>
+      <ThemeProvider theme={LPtheme}>
+        <CssBaseline />
+        <ApplicationBar mode={mode} toggleColorMode={toggleColorMode}>
+          <Component {...pageProps} />
+        </ApplicationBar>
+        <Footer />
+      </ThemeProvider>
+    </AppCacheProvider>
   );
 }
