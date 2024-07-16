@@ -1,6 +1,6 @@
 import { Alert, Col, Container, Row } from "react-bootstrap";
 
-import { ErrorResponse } from "../types/CharacterResult";
+import { ErrorResponse } from "~/types/CharacterResult";
 
 type ErrorResponseProps = {
   error: ErrorResponse;

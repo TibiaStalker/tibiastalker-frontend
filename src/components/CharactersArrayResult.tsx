@@ -3,9 +3,9 @@ import { format } from "date-fns";
 import { useContext } from "react";
 import { Accordion, Col, Container, Row } from "react-bootstrap";
 
-import { SearchedCharacterNameContext } from "../contexts/SearchedCharacterNameContext";
-import { toPascalCase } from "../functions/StringModificator";
-import { PossibleInvisibleCharacterResponse } from "../types/CharacterResult";
+import { SearchedCharacterNameContext } from "~/contexts/SearchedCharacterNameContext";
+import { toPascalCase } from "~/functions/StringModificator";
+import { PossibleInvisibleCharacterResponse } from "~/types/CharacterResult";
 
 type Props = {
   propertyValue: PossibleInvisibleCharacterResponse[];

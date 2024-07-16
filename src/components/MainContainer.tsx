@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Dropdown, Form, Row, Spinner } from "react-bootstrap";
 
-import { SearchedCharacterNameContext } from "../contexts/SearchedCharacterNameContext";
-import { SimilarCharactersCurrentPageContext } from "../contexts/SimilarCharactersCurrentPageContext";
-import { fetchCharacterData, fetchPromptData, fetchSimilarCharactersData } from "../functions/FetchData";
-import { CharacterResponse, ErrorResponse, SimilarCharactersResponse } from "../types/CharacterResult";
-import { LOGO_SIZE } from "../utils/constants";
+import { SearchedCharacterNameContext } from "~/contexts/SearchedCharacterNameContext";
+import { SimilarCharactersCurrentPageContext } from "~/contexts/SimilarCharactersCurrentPageContext";
+import { fetchCharacterData, fetchPromptData, fetchSimilarCharactersData } from "~/functions/FetchData";
+import { CharacterResponse, ErrorResponse, SimilarCharactersResponse } from "~/types/CharacterResult";
+import { LOGO_SIZE } from "~/utils/constants";
+
 import CharacterResult from "./CharacterResult";
 import TibiaLogo2 from "./logos/TibiaLogo2";
 import ErrorResult from "./RenderError";

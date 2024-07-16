@@ -2,10 +2,11 @@
 import { useContext } from "react";
 import { Col, Container, Row, Table } from "react-bootstrap";
 
-import { SearchedCharacterNameContext } from "../contexts/SearchedCharacterNameContext";
-import { SimilarCharactersCurrentPageContext } from "../contexts/SimilarCharactersCurrentPageContext";
-import { toPascalCase } from "../functions/StringModificator";
-import { SimilarCharactersResponse } from "../types/CharacterResult";
+import { SearchedCharacterNameContext } from "~/contexts/SearchedCharacterNameContext";
+import { SimilarCharactersCurrentPageContext } from "~/contexts/SimilarCharactersCurrentPageContext";
+import { toPascalCase } from "~/functions/StringModificator";
+import { SimilarCharactersResponse } from "~/types/CharacterResult";
+
 import PaginationResult from "./PaginationResult";
 
 type SimilarCharactersProps = {

@@ -1,4 +1,4 @@
-import { CharacterResponse, ErrorResponse, SimilarCharactersResponse } from "../types/CharacterResult";
+import { CharacterResponse, ErrorResponse, SimilarCharactersResponse } from "~/types/CharacterResult";
 
 const baseUrl = "https://api.tibiastalker.pl/api/tibia-stalker/v1/characters";
 

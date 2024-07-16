@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 
-import { CharacterResponse } from "../types/CharacterResult";
+import { CharacterResponse } from "~/types/CharacterResult";
+
 import CharacterBasicProperty from "./BasicPropertyResult";
 import CharactersArrayResult from "./CharactersArrayResult";
 import StringArrayResult from "./StringArrayResult";
