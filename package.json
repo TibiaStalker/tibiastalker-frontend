@@ -23,6 +23,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@microsoft/signalr": "^8.0.7",
     "@next/eslint-plugin-next": "^14.2.4",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.2.4",

@@ -25,3 +25,4 @@ yarn-error.log*
 # nextJS
 .next
 out
+env.local
