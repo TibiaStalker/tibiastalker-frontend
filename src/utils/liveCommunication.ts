@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 
-import { characterTrackUrl } from "../constants/api";
+import { characterTrackUrl } from "~/constants/api";
 
 export const connection = new signalR.HubConnectionBuilder()
   .withUrl(characterTrackUrl, {

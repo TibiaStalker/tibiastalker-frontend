@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Accordion } from "react-bootstrap";
 
-import CharacterSearchContext from "../features/CharacterSearch/context/characterSearchContext";
+import CharacterSearchContext from "~/features/CharacterSearch/context/characterSearchContext";
 
 type Props = {
   propertyValue: string[];

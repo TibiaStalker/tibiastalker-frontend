@@ -2,7 +2,8 @@ import { format } from "date-fns";
 import { useContext } from "react";
 import { Accordion, Col, Container, Row } from "react-bootstrap";
 
-import { toPascalCase } from "../../../../utils/stringModificator";
+import { toPascalCase } from "~/utils/stringModificator";
+
 import CharacterSearchContext from "../../context/characterSearchContext";
 import { ProbablyConnectedCharactersProps } from "./types";
 

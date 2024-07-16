@@ -1,6 +1,6 @@
 import { KeyboardEventHandler, useState } from "react";
 
-import { TrackingCharacter } from "../features/Tracking";
+import { TrackingCharacter } from "~/features/Tracking";
 
 const Tracking = () => {
   const [characterList, setCharacterList] = useState<string[]>([]);
