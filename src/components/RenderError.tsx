@@ -1,19 +1,20 @@
 import { Alert, Col, Container, Row } from "react-bootstrap";
 
-import { ErrorResponse } from "../types/CharacterResult";
-
 type ErrorResponseProps = {
-  error: ErrorResponse;
+  message?: null | string;
 };
 
-function ErrorResult(props: ErrorResponseProps) {
-  const { error } = props;
+function ErrorResult({ message }: ErrorResponseProps) {
+  if (!message) {
+    return null;
+  }
+
   return (
     <Container className="d-grid mt-4">
       <Row>
-        <Col xs="auto" style={{ minWidth: "320px" }}>
+        <Col xs="auto" style={{ width: "320px" }}>
           <Alert key="danger" variant="danger">
-            {error.detail}
+            {message}
           </Alert>
         </Col>
       </Row>
