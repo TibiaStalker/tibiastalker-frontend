@@ -11,7 +11,7 @@ type Props = {
 };
 
 function StringArrayResult(props: Props) {
-  const [_, setCharacterName] = useContext(SearchedCharacterNameContext);
+  const startSearchingCharacter = useContext(SearchedCharacterNameContext);
 
   return (
     <Accordion className="mb-1">
@@ -24,7 +24,7 @@ function StringArrayResult(props: Props) {
                 key={item}
                 className="character-link"
                 onClick={() => {
-                  setCharacterName(item);
+                  startSearchingCharacter(item);
                 }}>
                 {item}
               </div>

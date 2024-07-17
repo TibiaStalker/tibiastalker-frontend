@@ -1,43 +1,36 @@
-import { useEffect, useState } from "react";
-import { Button, Col, Container, Dropdown, Form, Row, Spinner } from "react-bootstrap";
+import { useCallback, useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 
 import { SearchedCharacterNameContext } from "../contexts/SearchedCharacterNameContext";
 import { SimilarCharactersCurrentPageContext } from "../contexts/SimilarCharactersCurrentPageContext";
-import { fetchCharacterData, fetchPromptData, fetchSimilarCharactersData } from "../functions/FetchData";
+import { SearchForm } from "../features/CharacterSearch";
 import { CharacterResponse, ErrorResponse, SimilarCharactersResponse } from "../types/CharacterResult";
+import StartSearchingCharacter from "../types/StartSearchingCharacter";
 import { LOGO_SIZE } from "../utils/constants";
+import { fetchCharacterData, fetchSimilarCharactersData } from "../utils/FetchData";
 import CharacterResult from "./CharacterResult";
 import TibiaLogo2 from "./logos/TibiaLogo2";
 import ErrorResult from "./RenderError";
 import SimilarCharactersResult from "./SimilarCharactersResult";
 
 function MainContainer() {
-  const [input, setInput] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [characterResponse, setCharacterResponse] = useState<CharacterResponse | ErrorResponse | null>(null);
   const [characterData, setCharacterData] = useState<CharacterResponse | null>(null);
   const [errorData, setErrorData] = useState<ErrorResponse | null>(null);
   const [similarCharacters, setSimilarCharacters] = useState<SimilarCharactersResponse | null>(null);
-  const [promptData, setPromptData] = useState<string[]>([]);
-  const [dropdownListVisibility, setDropdownListVisibility] = useState(false);
-  const [characterName, setCharacterName] = useState<string>("");
-  const [searchText, setSearchText] = useState("");
+  const [searchedCharacterName, setSearchedCharacterName] = useState<string>("");
 
-  const showDropdownList = () => setDropdownListVisibility(true);
-  const hideDropdownList = () => setDropdownListVisibility(false);
   const showLoader = () => setLoading(true);
   const hideLoader = () => setLoading(false);
 
-  useEffect(() => {
-    if (loading === false && characterName !== "") {
-      showLoader();
-      setInput(characterName);
-      fetchCharacterData(characterName, setCharacterResponse).then(() => hideLoader());
-      setSimilarCharacters(null);
-      hideDropdownList();
-    }
-  }, [characterName]);
+  const startSearchingCharacter: StartSearchingCharacter = useCallback((characterName: string) => {
+    showLoader();
+    setSearchedCharacterName(characterName);
+    fetchCharacterData(characterName, setCharacterResponse).then(() => hideLoader());
+    setSimilarCharacters(null);
+  }, []);
 
   useEffect(() => {
     setErrorData(null);
@@ -57,7 +50,7 @@ function MainContainer() {
   useEffect(() => {
     if (errorData?.status === 404) {
       showLoader();
-      fetchSimilarCharactersData(characterName, currentPage, setSimilarCharacters).then(() => hideLoader());
+      fetchSimilarCharactersData(searchedCharacterName, currentPage, setSimilarCharacters).then(() => hideLoader());
     }
   }, [currentPage]);
 
@@ -66,20 +59,6 @@ function MainContainer() {
       setCurrentPage(1);
     }
   }, [errorData]);
-
-  useEffect(() => {
-    setInput(searchText);
-    const delayDebounce = setTimeout(() => {
-      if (searchText.length > 2) {
-        fetchPromptData(searchText, setPromptData);
-        showDropdownList();
-      }
-      if (searchText.length < 3) {
-        hideDropdownList();
-      }
-    }, 800);
-    return () => clearTimeout(delayDebounce);
-  }, [searchText]);
 
   const [isLogoClicked, setIsLogoClicked] = useState(false);
 
@@ -90,7 +69,7 @@ function MainContainer() {
   const smallLogoSize = LOGO_SIZE * 0.4;
 
   return (
-    <SearchedCharacterNameContext.Provider value={[characterName, setCharacterName]}>
+    <SearchedCharacterNameContext.Provider value={startSearchingCharacter}>
       <SimilarCharactersCurrentPageContext.Provider value={[currentPage, setCurrentPage]}>
         <Container fluid className="d-flex flex-column align-items-center p-0">
           <div className={`absoluteCenter align-items-center d-flex flex-column ${isLogoClicked ? "fadeOut" : "transform-50"}`} onClick={toggleWidth}>
@@ -104,52 +83,7 @@ function MainContainer() {
               </div>
             </Col>
             <Col className={isLogoClicked ? "fadeIn" : "fadeOut"}>
-              <Row>
-                <Col className="p-1">
-                  <Form.Control
-                    type="text"
-                    autoFocus
-                    placeholder="Character Name"
-                    onChange={event => {
-                      setSearchText(event.target.value);
-                    }}
-                    value={input}
-                    onFocus={event => {
-                      event.target.value.length > 2 && showDropdownList();
-                    }}
-                    onBlur={() => {
-                      setTimeout(() => hideDropdownList(), 500);
-                    }}
-                    onKeyDown={event => {
-                      event.key === "Enter" && setCharacterName(input);
-                    }}
-                  />
-                  <Dropdown.Menu show={dropdownListVisibility}>
-                    {promptData.map(item => (
-                      <Dropdown.Item
-                        key={item}
-                        onClick={() => {
-                          setCharacterName(item);
-                        }}>
-                        {item}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Col>
-                <Col xs="auto" className="p-1">
-                  {loading ? (
-                    <Spinner animation="border" />
-                  ) : (
-                    <Button
-                      variant="outline-info"
-                      onClick={() => {
-                        setCharacterName(input);
-                      }}>
-                      Search
-                    </Button>
-                  )}
-                </Col>
-              </Row>
+              <SearchForm isLoading={loading} value={searchedCharacterName} onSubmit={startSearchingCharacter} />
             </Col>
           </Row>
           <Row>

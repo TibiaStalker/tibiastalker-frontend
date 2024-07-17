@@ -4,8 +4,8 @@ import { useContext } from "react";
 import { Accordion, Col, Container, Row } from "react-bootstrap";
 
 import { SearchedCharacterNameContext } from "../contexts/SearchedCharacterNameContext";
-import { toPascalCase } from "../functions/StringModificator";
 import { PossibleInvisibleCharacterResponse } from "../types/CharacterResult";
+import { toPascalCase } from "../utils/stringModificator";
 
 type Props = {
   propertyValue: PossibleInvisibleCharacterResponse[];
@@ -13,7 +13,7 @@ type Props = {
 };
 
 function CharactersArrayResult(props: Props) {
-  const [_, setCharacterName] = useContext(SearchedCharacterNameContext);
+  const startSearchingCharacter = useContext(SearchedCharacterNameContext);
 
   return (
     <Accordion>
@@ -42,7 +42,7 @@ function CharactersArrayResult(props: Props) {
                   xs="auto"
                   className="flex-grow-1 character-link p-0"
                   onClick={() => {
-                    setCharacterName(item.otherCharacterName);
+                    startSearchingCharacter(item.otherCharacterName);
                   }}>
                   {toPascalCase(item.otherCharacterName)}
                 </Col>
