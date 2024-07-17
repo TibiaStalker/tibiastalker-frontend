@@ -12,12 +12,8 @@ function PaginationResult(props: TotalCountProps) {
   const [inputValue, setInputValue] = useState<string>(`${currentPage}`);
 
   const handleInputChange = (value: string) => {
-    if (/^\d+$/.test(value)) {
-      const numericValue = parseInt(value, 10);
-
-      if (numericValue >= 1 && numericValue <= totalPages) {
-        setInputValue(value);
-      }
+    if (/^\d+$/.test(value) || value === "") {
+      setInputValue(value);
     }
   };
   useEffect(
@@ -68,7 +64,21 @@ function PaginationResult(props: TotalCountProps) {
             handleInputChange(event.currentTarget.value);
           }}
           onBlur={event => {
-            setCurrentPage(+event.currentTarget.value);
+            const numericValue = parseInt(event.currentTarget.value, 10);
+
+            if (numericValue < 1 || Number.isNaN(numericValue)) {
+              setCurrentPage(1);
+              setInputValue("1");
+              return;
+            }
+
+            if (numericValue > totalPages) {
+              setCurrentPage(totalPages);
+              setInputValue(`${totalPages}`);
+              return;
+            }
+
+            setCurrentPage(numericValue);
           }}
           onKeyDown={event => {
             if (event.key === "Enter") {
