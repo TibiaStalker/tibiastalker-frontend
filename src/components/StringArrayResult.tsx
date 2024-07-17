@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useContext } from "react";
 import { Accordion } from "react-bootstrap";
 
-import { SearchedCharacterNameContext } from "../contexts/SearchedCharacterNameContext";
+import CharacterSearchContext from "../features/CharacterSearch/context/characterSearchContext";
 
 type Props = {
   propertyValue: string[];
@@ -11,7 +10,7 @@ type Props = {
 };
 
 function StringArrayResult(props: Props) {
-  const startSearchingCharacter = useContext(SearchedCharacterNameContext);
+  const { search } = useContext(CharacterSearchContext);
 
   return (
     <Accordion className="mb-1">
@@ -24,7 +23,7 @@ function StringArrayResult(props: Props) {
                 key={item}
                 className="character-link"
                 onClick={() => {
-                  startSearchingCharacter(item);
+                  search(item);
                 }}>
                 {item}
               </div>
