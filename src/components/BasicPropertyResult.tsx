@@ -11,7 +11,9 @@ function CharacterBasicProperty(props: Props) {
       <Button variant="success" style={{ maxWidth: "100px" }}>
         {props.propertyName}:
       </Button>
-      <Button variant="outline-success">{props.propertyValue as string | number}</Button>
+      <Button variant="outline-success">
+        {props.propertyValue as string | number}
+      </Button>
     </ButtonGroup>
   );
 }

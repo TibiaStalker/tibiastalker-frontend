@@ -15,7 +15,10 @@ export const usePromptList = () => {
   const getPromptList = useCallback((currentInputValue: string) => {
     clearTimeout(debounceRef.current);
     if (currentInputValue.length > 2) {
-      debounceRef.current = setTimeout(() => fetchPromptList(currentInputValue, setPromptList), 800);
+      debounceRef.current = setTimeout(
+        () => fetchPromptList(currentInputValue, setPromptList),
+        800,
+      );
     }
   }, []);
 

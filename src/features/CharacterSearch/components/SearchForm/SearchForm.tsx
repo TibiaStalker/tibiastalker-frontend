@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Button, Col, Dropdown, Form, Row, Spinner } from "react-bootstrap";
 
+import CharacterSearchContext from "../../context/characterSearchContext";
 import usePromptList from "../../hooks/usePromptList";
-import { SearchFormProps } from "./types";
 
-export const SearchForm = ({ onSubmit, isLoading, value }: SearchFormProps) => {
+export const SearchForm = () => {
   const { promptList, getPromptList, clearPromptList } = usePromptList();
-  const [inputValue, setInputValue] = useState(value);
+  const { search, searchStatus } = useContext(CharacterSearchContext);
+  const [inputValue, setInputValue] = useState("");
   const [isFocusOnInput, setIsFocusOnInput] = useState(false);
   const timeoutRef = useRef(null);
 
@@ -17,10 +18,10 @@ export const SearchForm = ({ onSubmit, isLoading, value }: SearchFormProps) => {
 
   const submit = (value?: string) => {
     if (!value) {
-      onSubmit(inputValue);
+      search(inputValue);
     } else {
       setInputValue(value);
-      onSubmit(value);
+      search(value);
     }
     setIsFocusOnInput(false);
     clearPromptList();
@@ -34,13 +35,11 @@ export const SearchForm = ({ onSubmit, isLoading, value }: SearchFormProps) => {
     clearTimeout(timeoutRef.current);
   };
 
-  useEffect(
-    function syncExternalValueWithInput() {
-      if (value !== inputValue) setInputValue(value);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [value],
-  );
+  useEffect(() => {
+    if (searchStatus.lastSearch && searchStatus.lastSearch !== inputValue) {
+      setInputValue(searchStatus.lastSearch);
+    }
+  }, [searchStatus.lastSearch]);
 
   return (
     <Row>
@@ -57,7 +56,9 @@ export const SearchForm = ({ onSubmit, isLoading, value }: SearchFormProps) => {
             event.key === "Enter" && submit();
           }}
         />
-        <Dropdown.Menu show={isFocusOnInput && promptList.length > 0} onFocus={abortInputBlurWhenFocusOnPrompt}>
+        <Dropdown.Menu
+          show={isFocusOnInput && promptList.length > 0}
+          onFocus={abortInputBlurWhenFocusOnPrompt}>
           {promptList.map(item => (
             <Dropdown.Item
               key={item}
@@ -70,7 +71,7 @@ export const SearchForm = ({ onSubmit, isLoading, value }: SearchFormProps) => {
         </Dropdown.Menu>
       </Col>
       <Col xs="auto" className="p-1">
-        {isLoading ? (
+        {searchStatus.isSearching ? (
           <Spinner animation="border" />
         ) : (
           <Button variant="outline-info" onClick={() => submit()}>

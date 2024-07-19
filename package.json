@@ -40,7 +40,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "lint:fix": "prettier . --write || eslint . --fix"
+    "lint:fix": "prettier ./src --write || eslint -c ./.eslintrc ./src/**/*.* --fix"
   },
   "engines": {
     "node": "^20"
