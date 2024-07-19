@@ -6,7 +6,11 @@ const Tracking = () => {
   const [characterList, setCharacterList] = useState<string[]>([]);
 
   const addCharacter: KeyboardEventHandler<HTMLInputElement> = event => {
-    if (event.key === "Enter" && "value" in event.target && typeof event.target.value === "string") {
+    if (
+      event.key === "Enter" &&
+      "value" in event.target &&
+      typeof event.target.value === "string"
+    ) {
       const characterName: string = event.target.value;
       setCharacterList(currentList => [...currentList, characterName]);
       event.target.value = "";
@@ -14,7 +18,9 @@ const Tracking = () => {
   };
 
   const removeCharacter = (name: string) => () => {
-    setCharacterList(currentList => currentList.filter(characterOnList => characterOnList !== name));
+    setCharacterList(currentList =>
+      currentList.filter(characterOnList => characterOnList !== name),
+    );
   };
 
   return (

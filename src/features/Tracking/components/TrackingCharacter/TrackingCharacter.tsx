@@ -16,7 +16,9 @@ const statusStyle: CSSProperties = {
   minHeight: "1em",
 };
 
-export const TrackingCharacter = ({ characterName }: TrackingCharacterProps) => {
+export const TrackingCharacter = ({
+  characterName,
+}: TrackingCharacterProps) => {
   const [isTracking, setIsTracking] = useState(false);
   const { track, untrack, onlineStatus } = useCharacterTracking(characterName);
 
@@ -36,7 +38,11 @@ export const TrackingCharacter = ({ characterName }: TrackingCharacterProps) => 
       <button type="button" onClick={toggleTrack}>
         {isTracking ? "untrack" : "track"}
       </button>{" "}
-      <span style={{ ...statusStyle, backgroundColor: getColorByStatus(onlineStatus) }}></span>
+      <span
+        style={{
+          ...statusStyle,
+          backgroundColor: getColorByStatus(onlineStatus),
+        }}></span>
     </div>
   );
 };

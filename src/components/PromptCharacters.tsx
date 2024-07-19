@@ -4,7 +4,8 @@ function PromptResultTable() {
   const promptResults = ["name1", "name2", "name3", "name4", "name5"];
   const message = promptResults.length === 0 ? <p>No character found</p> : null;
 
-  const handleClick: MouseEventHandler<HTMLLIElement> = event => console.log(event);
+  const handleClick: MouseEventHandler<HTMLLIElement> = event =>
+    console.log(event);
 
   return (
     <>
