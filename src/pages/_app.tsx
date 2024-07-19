@@ -1,4 +1,5 @@
-import { PaletteMode } from "@mui/material";
+import { alpha, PaletteMode } from "@mui/material";
+import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AppCacheProvider } from "@mui/material-nextjs/v13-pagesRouter";
@@ -19,7 +20,9 @@ const inter = Inter({
 
 export default function App({ Component, pageProps }: AppProps) {
   const [mode, setMode] = useState<PaletteMode>("dark");
-  const LPtheme = createTheme(getLPTheme(mode, { fontFamily: inter.style.fontFamily }));
+  const LPtheme = createTheme(
+    getLPTheme(mode, { fontFamily: inter.style.fontFamily }),
+  );
 
   const toggleColorMode = () => {
     setMode(prev => (prev === "dark" ? "light" : "dark"));
@@ -71,10 +74,29 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <ThemeProvider theme={LPtheme}>
         <CssBaseline />
-        <ApplicationBar mode={mode} toggleColorMode={toggleColorMode}>
-          <Component {...pageProps} />
-        </ApplicationBar>
-        <Footer />
+        <Box
+          sx={theme => ({
+            minHeight: "100vh",
+            width: "100%",
+            backgroundImage:
+              theme.palette.mode === "light"
+                ? "linear-gradient(180deg, #CEE5FD, #FFF)"
+                : `linear-gradient(#02294F, ${alpha("#090E10", 0.0)})`,
+            backgroundSize: "100% 300px",
+            backgroundRepeat: "no-repeat",
+            pt: { xs: 14, sm: 16 },
+            display: "flex",
+            flexDirection: "column",
+          })}
+        >
+          <ApplicationBar mode={mode} toggleColorMode={toggleColorMode} />
+
+          <Box component="main" sx={{ flexGrow: 1 }}>
+            <Component {...pageProps} />
+          </Box>
+
+          <Footer />
+        </Box>
       </ThemeProvider>
     </AppCacheProvider>
   );
