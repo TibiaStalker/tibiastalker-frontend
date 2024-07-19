@@ -1,17 +1,21 @@
 import Divider from "@mui/material/Divider";
+import Head from "next/head";
 import * as React from "react";
 
-import FAQ from "~/components/FAQ";
-import Features from "~/components/Features";
-import Hero from "~/components/Hero";
-import Highlights from "~/components/Highlights";
-import LogoCollection from "~/components/LogoCollection";
-import Pricing from "~/components/Pricing";
-import Testimonials from "~/components/Testimonials";
+import FAQ from "~/components/marketing/FAQ";
+import Features from "~/components/marketing/Features";
+import Hero from "~/components/marketing/Hero";
+import Highlights from "~/components/marketing/Highlights";
+import LogoCollection from "~/components/marketing/LogoCollection";
+import Pricing from "~/components/marketing/Pricing";
+import Testimonials from "~/components/marketing/Testimonials";
 
 export default function LandingPage() {
   return (
     <>
+      <Head>
+        <title>New look</title>
+      </Head>
       <Hero />
       <LogoCollection />
       <Features />
