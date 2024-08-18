@@ -433,7 +433,7 @@ export default function getLPTheme(
               },
             }),
           }),
-          outlined: ({ theme }) => ({
+          outlined: () => ({
             background: "transparent",
           }),
           root: ({ theme }) => ({
