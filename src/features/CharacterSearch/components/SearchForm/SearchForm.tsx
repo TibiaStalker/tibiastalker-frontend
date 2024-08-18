@@ -1,83 +1,68 @@
-import { useEffect, useRef, useState } from "react";
-import { Button, Col, Dropdown, Form, Row, Spinner } from "react-bootstrap";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import { forwardRef, useContext, useEffect, useState } from "react";
 
-import usePromptList from "../../hooks/usePromptList";
-import { SearchFormProps } from "./types";
+import CharacterSearchContext from "../../context/characterSearchContext";
+import CharacterAutocompleteInput from "../CharacterAutocompleteInput";
 
-export const SearchForm = ({ onSubmit, isLoading, value }: SearchFormProps) => {
-  const { promptList, getPromptList, clearPromptList } = usePromptList();
-  const [inputValue, setInputValue] = useState(value);
-  const [isFocusOnInput, setIsFocusOnInput] = useState(false);
-  const timeoutRef = useRef(null);
+const SEARCH_INPUT_NAME = "characterName";
 
-  const updateInputValue = (newValue: string) => {
-    setInputValue(newValue);
-    getPromptList(newValue);
-  };
+export const SearchForm = forwardRef<HTMLFormElement>((prop: never, ref) => {
+  const { search, searchStatus } = useContext(CharacterSearchContext);
+  const { lastSearch } = searchStatus;
 
-  const submit = (value?: string) => {
-    if (!value) {
-      onSubmit(inputValue);
-    } else {
-      setInputValue(value);
-      onSubmit(value);
+  const [autocompleteValue, setAutoCompleteValue] = useState("");
+
+  useEffect(() => {
+    if (lastSearch !== autocompleteValue) {
+      setAutoCompleteValue(lastSearch);
     }
-    setIsFocusOnInput(false);
-    clearPromptList();
-  };
+  }, [lastSearch]);
 
-  const delayedInputBlur = () => {
-    timeoutRef.current = setTimeout(() => setIsFocusOnInput(false), 200);
+  const submit = (characterName: string | null) => {
+    if (characterName) {
+      search(characterName);
+    }
   };
-
-  const abortInputBlurWhenFocusOnPrompt = () => {
-    clearTimeout(timeoutRef.current);
-  };
-
-  useEffect(
-    function syncExternalValueWithInput() {
-      if (value !== inputValue) setInputValue(value);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [value],
-  );
 
   return (
-    <Row>
-      <Col className="p-1">
-        <Form.Control
-          type="text"
-          autoFocus
-          placeholder="Character Name"
-          onChange={event => updateInputValue(event.target.value)}
-          value={inputValue}
-          onFocus={() => setIsFocusOnInput(true)}
-          onBlur={delayedInputBlur}
-          onKeyDown={event => {
-            event.key === "Enter" && submit();
-          }}
-        />
-        <Dropdown.Menu show={isFocusOnInput && promptList.length > 0} onFocus={abortInputBlurWhenFocusOnPrompt}>
-          {promptList.map(item => (
-            <Dropdown.Item
-              key={item}
-              onClick={() => {
-                submit(item);
-              }}>
-              {item}
-            </Dropdown.Item>
-          ))}
-        </Dropdown.Menu>
-      </Col>
-      <Col xs="auto" className="p-1">
-        {isLoading ? (
-          <Spinner animation="border" />
-        ) : (
-          <Button variant="outline-info" onClick={() => submit()}>
-            Search
-          </Button>
-        )}
-      </Col>
-    </Row>
+    <Stack
+      ref={ref}
+      direction={{ xs: "column", sm: "row" }}
+      spacing={1}
+      useFlexGap
+      sx={{
+        pt: 2,
+        width: { xs: "100%", sm: "auto" },
+        "scroll-margin-top": "72px",
+      }}
+      component="form"
+      onSubmit={event => {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget);
+        const characterName = formData.get(SEARCH_INPUT_NAME);
+
+        if (typeof characterName === "string" && characterName) {
+          submit(characterName);
+        }
+      }}
+    >
+      <CharacterAutocompleteInput
+        name={SEARCH_INPUT_NAME}
+        ariaLabel="Enter your enemy name"
+        placeholder="Your enemy name"
+        onSelected={submit}
+        value={autocompleteValue}
+        acceptEnteredValue
+        // TODO:
+        // onChange={value => setAutoCompleteValue(value)}
+      />
+      <Button type="submit" variant="contained" color="primary">
+        Start search
+      </Button>
+    </Stack>
   );
-};
+});
+
+SearchForm.displayName = "SearchForm";

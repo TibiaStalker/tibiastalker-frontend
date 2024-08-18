@@ -4,16 +4,24 @@ import { CharacterStatus } from "../enums";
 import { charactersTrackingStore } from "../store/charactersTrackingStore";
 
 export const useCharacterTracking = (characterName: string) => {
-  const characterTrackingMap = useSyncExternalStore(charactersTrackingStore.subscribe, charactersTrackingStore.getSnapshot);
+  const characterTrackingMap = useSyncExternalStore(
+    charactersTrackingStore.subscribe,
+    charactersTrackingStore.getSnapshot,
+  );
 
   const onlineStatus = useMemo(() => {
     const characterTrackingInfo = characterTrackingMap.get(characterName);
 
-    if (!characterTrackingInfo || characterTrackingInfo.isOnline === undefined) {
+    if (
+      !characterTrackingInfo ||
+      characterTrackingInfo.isOnline === undefined
+    ) {
       return CharacterStatus.unknown;
     }
 
-    return characterTrackingInfo.isOnline ? CharacterStatus.online : CharacterStatus.offline;
+    return characterTrackingInfo.isOnline
+      ? CharacterStatus.online
+      : CharacterStatus.offline;
   }, [characterTrackingMap, characterName]);
 
   const track = useCallback(async () => {

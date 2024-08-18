@@ -6,7 +6,12 @@ type Props = {
 function TibiaLogo2Full(props: Props) {
   return (
     <div style={{ width: props.size, height: "auto" }}>
-      <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 512 512">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        width="100%"
+        height="100%"
+        viewBox="0 0 512 512">
         {/* <path fill="#352208" d="M0 0L0 512L512 512L512 0L0 0Z" /> */}
         <path
           fill="#E1BB80"
