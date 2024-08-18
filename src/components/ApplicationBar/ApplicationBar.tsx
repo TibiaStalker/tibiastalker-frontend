@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
+import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 import { useState } from "react";
 
@@ -67,7 +68,9 @@ export function ApplicationBar({ mode, toggleColorMode }: ApplicationBarProps) {
               px: 0,
             }}
           >
-            <ApplicationLogo />
+            <Link underline="none" href="/" aria-label="go to homepage">
+              <ApplicationLogo />
+            </Link>
             <Box sx={{ display: { xs: "none", md: "flex" }, ml: 1 }}>
               {mainLinks}
             </Box>
