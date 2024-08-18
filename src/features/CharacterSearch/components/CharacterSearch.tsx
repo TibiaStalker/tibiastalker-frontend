@@ -10,18 +10,23 @@ import SimilarCharacters from "./SimilarCharacters";
 
 type CharacterSearchProps = {
   children: ReactNode;
+  onSearch?: () => void;
 };
 
-const CharacterSearch = ({ children }: CharacterSearchProps) => {
+const CharacterSearch = ({ children, onSearch }: CharacterSearchProps) => {
   const [searchStatus, setSearchStatus] =
     useState<SearchStatus>(initialSearchStatus);
 
   const search: SearchContext["search"] = (characterName: string) => {
-    setSearchStatus({
-      isSearching: true,
-      lastSearch: characterName,
-      isFound: false,
-    });
+    onSearch && onSearch();
+
+    setTimeout(() => {
+      setSearchStatus({
+        isSearching: true,
+        lastSearch: characterName,
+        isFound: false,
+      });
+    }, 500);
   };
 
   const successfullyFound: SearchContext["successfullyFound"] = () => {
@@ -47,7 +52,8 @@ const CharacterSearch = ({ children }: CharacterSearchProps) => {
         successfullyFound,
         notFound,
         searchStatus,
-      }}>
+      }}
+    >
       {children}
     </CharacterSearchContext.Provider>
   );

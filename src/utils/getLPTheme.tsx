@@ -122,7 +122,11 @@ const getDesignTokens = (mode: PaletteMode) => ({
       light: red[50],
       main: red[500],
       dark: red[700],
-      ...(mode === "dark" && { light: "#D32F2F", main: "#D32F2F", dark: "#B22A2A" }),
+      ...(mode === "dark" && {
+        light: "#D32F2F",
+        main: "#D32F2F",
+        dark: "#B22A2A",
+      }),
     },
     success: {
       light: green[300],
@@ -217,7 +221,10 @@ type ExtraOptions = {
   fontFamily: string;
 };
 
-export default function getLPTheme(mode: PaletteMode, extraOptions: ExtraOptions): ThemeOptions {
+export default function getLPTheme(
+  mode: PaletteMode,
+  extraOptions: ExtraOptions,
+): ThemeOptions {
   return {
     ...getDesignTokens(mode),
     typography: {
@@ -416,6 +423,19 @@ export default function getLPTheme(mode: PaletteMode, extraOptions: ExtraOptions
       },
       MuiChip: {
         styleOverrides: {
+          clickable: ({ theme }) => ({
+            "&:hover": {
+              backgroundColor: brand[500],
+            },
+            ...(theme.palette.mode === "dark" && {
+              "&:hover": {
+                backgroundColor: brand[600],
+              },
+            }),
+          }),
+          outlined: ({ theme }) => ({
+            background: "transparent",
+          }),
           root: ({ theme }) => ({
             alignSelf: "center",
             py: 1.5,
@@ -423,10 +443,6 @@ export default function getLPTheme(mode: PaletteMode, extraOptions: ExtraOptions
             background: `linear-gradient(to bottom right, ${brand[50]}, ${brand[100]})`,
             border: "1px solid",
             borderColor: `${alpha(brand[500], 0.3)}`,
-            fontWeight: "600",
-            "&:hover": {
-              backgroundColor: brand[500],
-            },
             "&:focus-visible": {
               borderColor: brand[800],
               backgroundColor: brand[200],
@@ -440,9 +456,6 @@ export default function getLPTheme(mode: PaletteMode, extraOptions: ExtraOptions
             ...(theme.palette.mode === "dark" && {
               background: `linear-gradient(to bottom right, ${brand[700]}, ${brand[900]})`,
               borderColor: `${alpha(brand[500], 0.5)}`,
-              "&:hover": {
-                backgroundColor: brand[600],
-              },
               "&:focus-visible": {
                 borderColor: brand[200],
                 backgroundColor: brand[600],
@@ -477,21 +490,6 @@ export default function getLPTheme(mode: PaletteMode, extraOptions: ExtraOptions
             fontWeight: 500,
             position: "relative",
             textDecoration: "none",
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              width: 0,
-              height: "1px",
-              bottom: 0,
-              left: 0,
-              backgroundColor: brand[200],
-              opacity: 0.7,
-              transition: "width 0.3s ease, opacity 0.3s ease",
-            },
-            "&:hover::before": {
-              width: "100%",
-              opacity: 1,
-            },
             ...(theme.palette.mode === "dark" && {
               color: brand[200],
             }),

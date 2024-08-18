@@ -1,84 +1,68 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { Button, Col, Dropdown, Form, Row, Spinner } from "react-bootstrap";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import { forwardRef, useContext, useEffect, useState } from "react";
 
 import CharacterSearchContext from "../../context/characterSearchContext";
-import usePromptList from "../../hooks/usePromptList";
+import CharacterAutocompleteInput from "../CharacterAutocompleteInput";
 
-export const SearchForm = () => {
-  const { promptList, getPromptList, clearPromptList } = usePromptList();
+const SEARCH_INPUT_NAME = "characterName";
+
+export const SearchForm = forwardRef<HTMLFormElement>((prop: never, ref) => {
   const { search, searchStatus } = useContext(CharacterSearchContext);
-  const [inputValue, setInputValue] = useState("");
-  const [isFocusOnInput, setIsFocusOnInput] = useState(false);
-  const timeoutRef = useRef(null);
+  const { lastSearch } = searchStatus;
 
-  const updateInputValue = (newValue: string) => {
-    setInputValue(newValue);
-    getPromptList(newValue);
-  };
-
-  const submit = (value?: string) => {
-    if (!value) {
-      search(inputValue);
-    } else {
-      setInputValue(value);
-      search(value);
-    }
-    setIsFocusOnInput(false);
-    clearPromptList();
-  };
-
-  const delayedInputBlur = () => {
-    timeoutRef.current = setTimeout(() => setIsFocusOnInput(false), 200);
-  };
-
-  const abortInputBlurWhenFocusOnPrompt = () => {
-    clearTimeout(timeoutRef.current);
-  };
+  const [autocompleteValue, setAutoCompleteValue] = useState("");
 
   useEffect(() => {
-    if (searchStatus.lastSearch && searchStatus.lastSearch !== inputValue) {
-      setInputValue(searchStatus.lastSearch);
+    if (lastSearch !== autocompleteValue) {
+      setAutoCompleteValue(lastSearch);
     }
-  }, [searchStatus.lastSearch]);
+  }, [lastSearch]);
+
+  const submit = (characterName: string | null) => {
+    if (characterName) {
+      search(characterName);
+    }
+  };
 
   return (
-    <Row>
-      <Col className="p-1">
-        <Form.Control
-          type="text"
-          autoFocus
-          placeholder="Character Name"
-          onChange={event => updateInputValue(event.target.value)}
-          value={inputValue}
-          onFocus={() => setIsFocusOnInput(true)}
-          onBlur={delayedInputBlur}
-          onKeyDown={event => {
-            event.key === "Enter" && submit();
-          }}
-        />
-        <Dropdown.Menu
-          show={isFocusOnInput && promptList.length > 0}
-          onFocus={abortInputBlurWhenFocusOnPrompt}>
-          {promptList.map(item => (
-            <Dropdown.Item
-              key={item}
-              onClick={() => {
-                submit(item);
-              }}>
-              {item}
-            </Dropdown.Item>
-          ))}
-        </Dropdown.Menu>
-      </Col>
-      <Col xs="auto" className="p-1">
-        {searchStatus.isSearching ? (
-          <Spinner animation="border" />
-        ) : (
-          <Button variant="outline-info" onClick={() => submit()}>
-            Search
-          </Button>
-        )}
-      </Col>
-    </Row>
+    <Stack
+      ref={ref}
+      direction={{ xs: "column", sm: "row" }}
+      spacing={1}
+      useFlexGap
+      sx={{
+        pt: 2,
+        width: { xs: "100%", sm: "auto" },
+        "scroll-margin-top": "72px",
+      }}
+      component="form"
+      onSubmit={event => {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget);
+        const characterName = formData.get(SEARCH_INPUT_NAME);
+
+        if (typeof characterName === "string" && characterName) {
+          submit(characterName);
+        }
+      }}
+    >
+      <CharacterAutocompleteInput
+        name={SEARCH_INPUT_NAME}
+        ariaLabel="Enter your enemy name"
+        placeholder="Your enemy name"
+        onSelected={submit}
+        value={autocompleteValue}
+        acceptEnteredValue
+        // TODO:
+        // onChange={value => setAutoCompleteValue(value)}
+      />
+      <Button type="submit" variant="contained" color="primary">
+        Start search
+      </Button>
+    </Stack>
   );
-};
+});
+
+SearchForm.displayName = "SearchForm";

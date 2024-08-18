@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Alert, Col, Container, Row, Spinner, Table } from "react-bootstrap";
 
 import PaginationResult from "../../../../components/PaginationResult";
-import { toPascalCase } from "../../../../utils/stringModificator";
+import { toPascalCase } from "../../../../utils/stringModifier";
 import CharacterSearchContext from "../../context/characterSearchContext";
 import fetchSimilarCharactersData from "./fetchSimilarCharactersData";
 
@@ -88,7 +88,8 @@ export const SimilarCharacters = () => {
         <Col
           xs="auto"
           style={{ minWidth: "320px" }}
-          className="d-flex flex-column align-items-center">
+          className="d-flex flex-column align-items-center"
+        >
           <Table striped bordered hover variant="dark" className="text-center">
             <thead>
               <tr>

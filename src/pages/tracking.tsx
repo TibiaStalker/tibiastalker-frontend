@@ -1,6 +1,6 @@
 import DeleteIcon from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
@@ -12,12 +12,20 @@ import { useState } from "react";
 import { CharacterAutocompleteInput } from "~/features/CharacterSearch";
 import { TrackingCharacter } from "~/features/Tracking";
 
+const CHARACTER_FIELD_NAME = "characterName";
+
 const Tracking = () => {
   const [characterList, setCharacterList] = useState<string[]>([]);
 
-  const addCharacter = (characterName: string) => {
-    console.log(characterName);
-    setCharacterList(currentList => [...currentList, characterName]);
+  const addCharacter = event => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const characterName = formData.get(CHARACTER_FIELD_NAME);
+
+    if (typeof characterName === "string" && characterName) {
+      setCharacterList(currentList => [...currentList, characterName]);
+    }
   };
 
   const removeCharacter = (name: string) => () => {
@@ -85,13 +93,22 @@ const Tracking = () => {
           Manage tracking characters list
         </Typography>
 
-        <div>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1}
+          useFlexGap
+          sx={{ pt: 2, width: { xs: "100%", sm: "auto" } }}
+          component="form"
+          onSubmit={addCharacter}
+        >
           <CharacterAutocompleteInput
-            clearAfterSubmit
+            name={CHARACTER_FIELD_NAME}
             placeholder="enter character to stalking"
-            onSubmit={addCharacter}
           />
-        </div>
+          <Button type="submit" variant="contained" color="primary">
+            Add
+          </Button>
+        </Stack>
 
         <h3>current tracking list:</h3>
         <div>
